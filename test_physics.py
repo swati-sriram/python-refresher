@@ -20,9 +20,9 @@ class TestPhysics(unittest.TestCase):
         
 
     def test_calculate_pressure(self):
-        self.assertAlmostEqual(physics.calculate_pressure(10), 98100)
-        self.assertAlmostEqual(physics.calculate_pressure(-10), 98100)
-        self.assertNotEqual(physics.calculate_pressure(200), 98100.0)
+        self.assertAlmostEqual(physics.calculate_pressure(10), 98100+101325)
+        self.assertAlmostEqual(physics.calculate_pressure(-10), 98100+101325)
+        self.assertNotEqual(physics.calculate_pressure(200), 98100 + 101325)
 
 
 if __name__ == "__main__":
