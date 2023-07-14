@@ -23,6 +23,38 @@ class TestPhysics(unittest.TestCase):
         self.assertAlmostEqual(physics.calculate_pressure(10), 98100+101325)
         self.assertAlmostEqual(physics.calculate_pressure(-10), 98100+101325)
         self.assertNotEqual(physics.calculate_pressure(200), 98100 + 101325)
+    
+    def test_calculate_acceleration(self):
+        self.assertEqual(physics.calculate_acceleration(10, 20), 0.5)
+        self.assertRaises(ValueError, physics.calculate_acceleration, 10, -2)
+        self.assertRaises(ValueError, physics.calculate_acceleration, -10, -2)
+        self.assertRaises(ValueError, physics.calculate_acceleration, -10, 2)
+        self.assertNotEqual(physics.calculate_acceleration(10, 30), 0.5)
+    
+    def test_calculate_angular_acceleration(self):
+        self.assertEqual(physics.calculate_angular_acceleration(-10, 2), -5)
+        self.assertEqual(physics.calculate_angular_acceleration(10, 2), 5)
+        self.assertRaises(ValueError, physics.calculate_angular_acceleration, 10, -2)
+        self.assertNotEqual(physics.calculate_angular_acceleration(10, 23), 5)
+    
+    def test_calculate_torque(self):
+        self.assertAlmostEqual(physics.calculate_torque(10,180,10), 0)
+        self.assertAlmostEqual(physics.calculate_torque(10,-180,10), 0)
+        self.assertRaises(ValueError, physics.calculate_torque,-10,275, -3)
+        self.assertRaises(ValueError, physics.calculate_torque,10,275, -3)
+        self.assertRaises(ValueError, physics.calculate_torque,-10,275, 3)
+    
+    def test_calculate_moment_of_inertia(self):
+        self.assertEqual(physics.calculate_moment_of_inertia(5,2),20)
+        self.assertNotEqual(physics.calculate_moment_of_inertia(5,20),20)
+        self.assertRaises(ValueError, physics.calculate_moment_of_inertia,-10,275)
+        self.assertRaises(ValueError, physics.calculate_moment_of_inertia,10,-275)
+        self.assertRaises(ValueError, physics.calculate_moment_of_inertia,-10,-275)
+
+   # def test_calculate_moment_of_inertia(self):
+
+
+
 
 
 if __name__ == "__main__":

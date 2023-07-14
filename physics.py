@@ -1,3 +1,5 @@
+import numpy as np
+
 g = 9.81
 pressure_at_surface = 101325 #kilo pascals
 def calculate_bouyancy(V: float, density_fluid: float):
@@ -17,3 +19,33 @@ def calculate_pressure(depth):
     '''returns the pressure given the depth (positve or negative) underwater'''
     return g*abs(depth)*1000 + pressure_at_surface
 
+def calculate_acceleration(F, m):
+    '''calculates the acceleration given the force and mass'''
+    if (F<0 or m<=0):
+        raise ValueError("Invalid force or mass")
+    acceleration = F/m
+    return acceleration
+
+def calculate_angular_acceleration(tau, I):
+    if (I<=0):
+        raise ValueError("Invalid moment of inertia")
+    angular_a = tau/I
+    return angular_a
+
+def calculate_torque(F_magnitude, F_direction, r): 
+    if (F_magnitude<=0 or r<=0):
+        raise ValueError("Invalid magitude or radius")
+    F_direction_rad = F_direction * np.pi / 180 #convert direction to radians
+    torque = r * F_magnitude * np.sin(F_direction_rad)
+    return torque
+
+def calculate_moment_of_inertia(m, r):
+    if (m<=0 or r<=0):
+        raise ValueError("Invalid mass or radius")
+    inertia = m*(r**2)
+    return inertia
+
+mass = 100
+volume = 0.1
+thruster_distance=0.5
+#def calculate_auv_acceleration(F_magnitude, F_angle):
