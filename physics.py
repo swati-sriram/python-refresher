@@ -45,7 +45,11 @@ def calculate_moment_of_inertia(m, r):
     inertia = m*(r**2)
     return inertia
 
-mass = 100
-volume = 0.1
-thruster_distance=0.5
-#def calculate_auv_acceleration(F_magnitude, F_angle):
+def calculate_auv_acceleration(F_magnitude, F_angle, mass = 100, volume = 0.1, thruster_distance=0.5):
+    # find the total force and divide by the mass, F_angle is in radians
+    F_x = F_magnitude*np.cos(F_angle)
+    F_y=F_magnitude*np.sin(F_angle)
+    acceleration_arr = np.array([F_x/mass, F_y/mass])
+    return acceleration_arr
+
+#def calculate_auv_angular_acceleration(F_maginitude, F_angle, inertia, thruster_distance):
