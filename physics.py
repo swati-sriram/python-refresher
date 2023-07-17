@@ -113,3 +113,32 @@ def calculate_auv2_angular_acceleration(T, alpha, L, l, inertia=100):
     torque = np.matmul(matrix, T)
     angular_acceleration = calculate_angular_acceleration(torque, inertia)
     return angular_acceleration
+
+
+def simulate_auv2_motion(
+    T, alpha, L, l, mass=100, inertia=100, dt=0.1, t_final=10, x0=0, y0=0, theta0=0
+):
+    t = np.arange(0, t_final, dt)
+    x = np.zeros_like(t)
+    y = np.zeros_like(t)
+    theta = np.zeros_like(t)
+    v = np.zeros_like(t)
+    omega = np.zeros_like(t)
+    a = np.zeros_like(t)
+    x[0] = x0
+    y[0] = y0
+    theta[0] = theta0
+    aa = np.zeros_like(t)
+    for i in range(1, len(t)):
+        a[i] = a[i - 1] + calculate_auv2_acceleration(T, alpha, theta, mass)
+        v[i][0] = v[i - 1][0] + a[i - 1][0] * dt
+        v[i][1] = v[i - 1][1] + a[i - 1][1] * dt
+        x[i] = x[i - 1] + v[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
+        y[i] = y[i - 1] + v[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
+        aa[i] = aa[i - 1] + calculate_auv2_angular_acceleration(T, alpha, L, l)
+        omega[i] = omega[i - 1] + aa[i - 1] * dt
+        theta[i] = (
+            theta[i - 1] + omega[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
+        )
+    output = (t, x, y, theta, v, omega, a)
+    return output
