@@ -87,9 +87,8 @@ def calculate_auv2_acceleration(T, alpha, theta, mass=100):
         raise ValueError("Invalid mass")
     matrix = np.array(
         [
-            [np.cos(alpha), np.cos(alpha), -np.cos(alpha), -np.cos(alpha)][
-                np.sin(alpha), -np.sin(alpha), -np.sin(alpha), np.sin(alpha)
-            ]
+            [np.cos(alpha), np.cos(alpha), -np.cos(alpha), -np.cos(alpha)],
+            [np.sin(alpha), -np.sin(alpha), -np.sin(alpha), np.sin(alpha)],
         ]
     )
     rotation = np.array(
@@ -131,7 +130,7 @@ def simulate_auv2_motion(
     theta[0] = theta0
     aa = np.zeros_like(t)
     for i in range(1, len(t)):
-        a[i] = a[i - 1] + calculate_auv2_acceleration(T, alpha, theta, mass)
+        a[i] = a[i - 1] + calculate_auv2_acceleration(T, alpha, theta[i], mass)
         v[i][0] = v[i - 1][0] + a[i - 1][0] * dt
         v[i][1] = v[i - 1][1] + a[i - 1][1] * dt
         x[i] = x[i - 1] + v[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
