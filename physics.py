@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 g = 9.81
 pressure_at_surface = 101325  # kilo pascals
@@ -142,3 +143,29 @@ def simulate_auv2_motion(
         )
     output = (t, x, y, theta, v, omega, a)
     return output
+
+
+def plot_auv2_motion(t, x, y, theta, v, omega, a):
+    plt.plot(t, x, label="X-position")
+    plt.plot(t, y, label="Y-position")
+    plt.plot(t, theta, label="Angular Displacement")
+    vx = np.zeros_like(t)
+    vy = np.zeros_like(t)
+    ax = np.zeros_like(t)
+    ay = np.zeros_like(t)
+    for i in range(0, len(t)):
+        vx = v[i][0]
+        vy = v[i][1]
+        ax = a[i][0]
+        ay = a[i][1]
+    plt.plot(t, omega, label="Angular Velocity")
+    plt.plot(t, vx, label="X-Velocity")
+    plt.plot(t, vy, label="Y-Velocity")
+    plt.plot(t, ax, label="X-Acceleration")
+    plt.plot(t, ay, label="Y-Accerleration")
+    plt.xlabel("Time (s)")
+    plt.ylabel(
+        "Position (m), Velocity (m/s), Acceleration (m/s^2), Angles (rad), Angular Velocity (rad/s)"
+    )
+    plt.legend()
+    plt.show()
