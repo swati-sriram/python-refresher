@@ -135,12 +135,10 @@ def simulate_auv2_motion(
         v[i][0] = v[i - 1][0] + a[i - 1][0] * dt
         v[i][1] = v[i - 1][1] + a[i - 1][1] * dt
         x[i] = x[i - 1] + v[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
-        y[i] = y[i - 1] + v[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
+        y[i] = y[i - 1] + v[i - 1][1] * dt + 0.5 * a[i - 1][1] * np.power(dt, 2)
         aa[i] = aa[i - 1] + calculate_auv2_angular_acceleration(T, alpha, L, l)
         omega[i] = omega[i - 1] + aa[i - 1] * dt
-        theta[i] = (
-            theta[i - 1] + omega[i - 1][0] * dt + 0.5 * a[i - 1][0] * np.power(dt, 2)
-        )
+        theta[i] = theta[i - 1] + omega[i - 1] * dt + 0.5 * aa[i - 1] * np.power(dt, 2)
     output = (t, x, y, theta, v, omega, a)
     return output
 
