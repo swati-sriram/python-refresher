@@ -128,14 +128,16 @@ def simulate_auv2_motion(
     x[0] = x0
     y[0] = y0
     theta[0] = theta0
-    angular_accerleration = calculate_auv2_angular_acceleration(T, alpha, L, l, inertia)
+    angular_acceraleration = calculate_auv2_angular_acceleration(
+        T, alpha, L, l, inertia
+    )
     for i in range(1, len(t)):
         a[i] = calculate_auv2_acceleration(T, alpha, theta[i], mass)
         v[i][0] = v[i - 1][0] + a[i - 1][0] * dt  # v[i] = v[i-1] + a[i-1]
         v[i][1] = v[i - 1][1] + a[i - 1][1] * dt
         x[i] = x[i - 1] + v[i][0] * dt
         y[i] = y[i - 1] + v[i][1] * dt
-        omega[i] = omega[i - 1] + angular_accerleration * dt
+        omega[i] = omega[i - 1] + angular_acceraleration * dt
         theta[i] = theta[i - 1] + omega[i] * dt
     output = (t, x, y, theta, v, omega, a)
     return output
@@ -145,15 +147,15 @@ def plot_auv2_motion(t, x, y, theta, v, omega, a):
     plt.plot(t, x, label="X-position")
     plt.plot(t, y, label="Y-position")
     plt.plot(t, theta, label="Angular Displacement")
-    vx = np.zeros_like(t)
+    vx = [0] * len(t)
     vy = np.zeros_like(t)
     ax = np.zeros_like(t)
     ay = np.zeros_like(t)
-    for i in range(0, 100):
-        vx = v[0][i]
-        vy = v[1][i]
-        ax = a[0][i]
-        ay = a[1][i]
+    for i in range(0, len(t)):
+        vx[i] = v[i][0]
+        vy[i] = v[i][1]
+        ax[i] = a[i][0]
+        ay[i] = a[i][1]
     plt.plot(t, omega, label="Angular Velocity")
     plt.plot(t, vx, label="X-Velocity")
     plt.plot(t, vy, label="Y-Velocity")
